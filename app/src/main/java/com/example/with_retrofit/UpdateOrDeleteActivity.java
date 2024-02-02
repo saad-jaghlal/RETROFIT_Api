@@ -38,9 +38,9 @@ public class UpdateOrDeleteActivity extends AppCompatActivity implements View.On
         if (position != -1) {
             Post  post = DataMangemant.posts.get(position);
             edID.setText(String.valueOf(post.getId()));
-            edTitle.setHint(post.getTitle());
-            edUserId.setHint(String.valueOf(post.getUserId()));
-            edBody.setHint(post.getBody());
+            edTitle.setText(post.getTitle());
+            edUserId.setText(String.valueOf(post.getUserId()));
+            edBody.setText(post.getBody());
         } else {
             Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
         }
@@ -50,21 +50,7 @@ public class UpdateOrDeleteActivity extends AppCompatActivity implements View.On
                 .build();
         apiService = retrofit.create(ApiService.class);
         Delete.setOnClickListener(this);
-//        Update.setOnClickListener(this);
-        Update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //int id = Integer.parseInt(edID.getText().toString().trim());
-//            int userId = Integer.parseInt(edUserId.getText().toString().trim());
-//            String title = edTitle.getText().toString();
-//            String body = edBody.getText().toString();
-//                postUpdated = new Post(Integer.parseInt(edID.getText().toString().trim())
-//                        ,Integer.parseInt(edUserId.getText().toString().trim())
-//                        ,edTitle.getText().toString(),edBody.getText().toString());
-            postUpdated = new Post(1,1,"saad","ahmed");
-                putPost(postUpdated.getId(), postUpdated);
-            }
-        });
+        Update.setOnClickListener(this);
     }
 
     public void putPost(int id,Post post) {
@@ -101,13 +87,14 @@ public class UpdateOrDeleteActivity extends AppCompatActivity implements View.On
             public void onResponse(Call<Post> call, Response<Post> response) {
                 if(response.isSuccessful()){
                     Post postResponse = response.body();
-                    String content = "";
-                    content += "Code: " + response.code() + "\n";
-                    content += "ID: " + postResponse.getId() + "\n";
-                    content += "UserId: " + postResponse.getUserId() + "\n";
-                    content += "Title: " + postResponse.getTitle() + "\n";
-                    content += "Text: " + postResponse.getBody() + "\n\n";
-                    Toast.makeText(getApplicationContext(), content, Toast.LENGTH_LONG).show();
+//                    String content = "";
+//                    content += "Code: " + response.code() + "\n";
+//                    content += "ID: " + postResponse.getId() + "\n";
+//                    content += "UserId: " + postResponse.getUserId() + "\n";
+//                    content += "Title: " + postResponse.getTitle() + "\n";
+//                    content += "Text: " + postResponse.getBody() + "\n\n";
+//                    Toast.makeText(getApplicationContext(), content, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Successful "+postResponse.getTitle(), Toast.LENGTH_LONG).show();
                 }else {
                     Toast.makeText(getApplicationContext(), "UnSuccessful", Toast.LENGTH_LONG).show();
                 }
@@ -123,17 +110,15 @@ public class UpdateOrDeleteActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.upDateButton) {
-//            int id = Integer.parseInt(edID.getText().toString().trim());
-//            int userId = Integer.parseInt(edUserId.getText().toString().trim());
-//            String title = edTitle.getText().toString();
-//            String body = edBody.getText().toString();
-//            postUpdated = new Post(Integer.parseInt(edID.getText().toString().trim())
-//                    ,Integer.parseInt(edUserId.getText().toString().trim())
-//                    ,edTitle.getText().toString(),edBody.getText().toString());
-//            postUpdated = new Post(1,1,"saad","ahmed");
+            int id = Integer.parseInt(edID.getText().toString().trim());
+            int userId = Integer.parseInt(edUserId.getText().toString().trim());
+            String title = edTitle.getText().toString();
+            String body = edBody.getText().toString();
+            postUpdated = new Post(id,userId,title,body);
             putPost(postUpdated.getId(), postUpdated);
         } else if (v.getId() == R.id.deleteButton) {
-            deletePost(1);
+            deletePost(Integer.parseInt(edID.getText().toString().trim()));
+//            Toast.makeText(getApplicationContext(), " " +Integer.parseInt(edID.getText().toString().trim()), Toast.LENGTH_LONG).show();
         }
     }
 }
